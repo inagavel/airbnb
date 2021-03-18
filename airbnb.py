@@ -1,5 +1,6 @@
 import csv
-import pandas as pd 
+import pandas as pd
+
 with open('list.csv', 'r', encoding='Latin1') as csv_file:
     #csv_reader = csv.reader(csv_file)
 

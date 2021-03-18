@@ -5,7 +5,7 @@ apart_collection = db['apart']
 
 i = 0
 for x in apart_collection.find({},{ "price"}):
-  print(x)
+  print(x["price"])
   i+=1
   if i == 5 :
       break
