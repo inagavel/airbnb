@@ -1,22 +1,67 @@
 import mysql.connector
+from mysql.connector import Error
 
-query1 = 'CREATE DATABASE IF NOT EXISTS airbnb;'
-query = 'CREATE TABLE IF NOT EXISTS apartment'
-query += ' ('
-query += '        id INTEGER AUTO_INCREMENT,'
-query += '        neighboourhood VARCHAR(255),'
-query += '        latitude DOUBLE,'
-query += '        longetude DOUBLE,'
-query += '        room_type   VARCHAR(255),'
-query += '        price      DOUBLE,'
-query += '        number_of_reviews    INTEGER,'
-query += '        reviews_per_month    DOUBLE,'
-query += '        PRIMARY KEY (id))'
 
-port ='8889'
-cnx = mysql.connector.connect(user='root', password='root', host='localhost', port=port)
-mycursor = cnx.cursor()
-mycursor.execute(query1)
-cnx.database = 'airbnb'
-mycursor.execute(query)
-cnx.close()
+def create_server_connection(host, user, password, port):
+    connection = None
+    try:
+        connection = mysql.connector.connect(
+            host=host,
+            user=user,
+            passwd=password,
+            port=port
+        )
+        print("MySQL Database connection successful")
+    except Error as err:
+        print(f"Error: '{err}'")
+
+    return connection
+
+
+def create_db_connection(host, user, password, db_name, port):
+    connection = None
+    try:
+        connection = mysql.connector.connect(
+            host=host,
+            user=user,
+            passwd=password,
+            database=db_name,
+            port=port
+        )
+        print("MySQL Database connection successful")
+    except Error as err:
+        print(f"Error: '{err}'")
+
+    return connection
+
+
+def execute_query(connection, query):
+    cursor = connection.cursor()
+    try:
+        cursor.execute(query)
+        connection.commit()
+        print("Query successful")
+    except Error as err:
+        print(f"Error: '{err}'")
+
+
+def execute_list_query(connection, sql, val):
+    cursor = connection.cursor()
+    try:
+        cursor.executemany(sql, val)
+        connection.commit()
+        print("Query successful")
+    except Error as err:
+        print(f"Error: '{err}'")
+
+def read_query(connection, query):
+    cursor = connection.cursor()
+    result = None
+    try:
+        cursor.execute(query)
+        result = cursor.fetchall()
+        return result
+    except Error as err:
+        print(f"Error: '{err}'")
+
+
