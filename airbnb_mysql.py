@@ -1,6 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
-
+import pandas as pd
 
 def create_server_connection(host, user, password, port):
     connection = None
@@ -64,4 +64,10 @@ def read_query(connection, query):
     except Error as err:
         print(f"Error: '{err}'")
 
-
+def db_to_df(connection,query,col_name):
+    db_read = read_query(connection, query)
+    from_db = []
+    for val in db_read:
+        from_db.append(val)
+    df = pd.DataFrame(from_db, columns=col_name)
+    return df

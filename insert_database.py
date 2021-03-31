@@ -1,13 +1,7 @@
 from airbnb_mysql import *
-import pymongo as mongo
 import csv
 import pandas as pd
-
 import json
-
-client = mongo.MongoClient()
-db = client["airbnb"]
-apart_collection = db['apart']
 
 with open('list.csv', 'r', encoding='Latin1') as csv_file:
     csv_reader = csv.reader(csv_file)
@@ -76,14 +70,13 @@ cnx = create_db_connection(user=user_name, password=user_name, host=host_name, d
 execute_query(cnx, query)
 cnx.close()
 
-
+cnx = create_db_connection(user=user_name, password=user_name, host=host_name, db_name=db, port=port_name)
 for app in list_app:
     print(app)
     insert_query = '''
     INSERT INTO apartment VALUES
     {}
     '''.format(app)
-    cnx = create_db_connection(user=user_name, password=user_name, host=host_name, db_name=db, port=port_name)
     execute_query(cnx, insert_query)
 
-
+cnx.close
