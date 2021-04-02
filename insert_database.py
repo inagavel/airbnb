@@ -79,4 +79,4 @@ for app in list_app:
     '''.format(app)
     execute_query(cnx, insert_query)
 
-cnx.close
+cnx.close()
